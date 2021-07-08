@@ -19,7 +19,7 @@ class Job
 
     private string $id;
     private string $stage;
-    private Status $status;
+    private ?Status $status = null;
 
     public static array $messageDefinition = [
         self::STAGE_JOB => [
@@ -57,7 +57,7 @@ class Job
         return $this->stage;
     }
 
-    public function getStatus(): Status
+    public function getStatus(): ?Status
     {
         return $this->status;
     }
