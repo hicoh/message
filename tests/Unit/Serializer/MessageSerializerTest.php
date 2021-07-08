@@ -1,6 +1,6 @@
 <?php
 
-namespace HiCo\Message\Unit\Helper;
+namespace HiCo\Message\Unit\Serializer;
 
 use HiCo\Message\Event;
 use HiCo\Message\EventEntity;
@@ -9,16 +9,26 @@ use HiCo\Message\Job;
 use HiCo\Message\Message;
 use HiCo\Message\Payload;
 use HiCo\Message\PayloadBase;
+use HiCo\Message\Serializer\MessageSerializer;
 use HiCo\Message\Spec;
 use HiCo\Message\Status;
 use HiCo\Message\Stream;
 use HiCo\Message\SystemSetting;
 use HiCo\Message\User;
 
-class MessageHelperTest extends \PHPUnit\Framework\TestCase
+class MessageSerializerTest extends \PHPUnit\Framework\TestCase
 {
+    private Message $message;
+
+    protected function setUp(): void
+    {
+        $messageNormalizer = new MessageSerializer();
+        $this->message = $messageNormalizer->deserialize(json_decode($this->expectedResult(), true), Message::class);
+    }
+
     public function testSerializeMessage()
     {
+        $messageSerializer = new MessageSerializer();
         $stream = $this->createStream();
         $job = $this->createJob();
         $event = $this->createEvent();
@@ -30,7 +40,14 @@ class MessageHelperTest extends \PHPUnit\Framework\TestCase
         $message->setEvent($event);
         $message->setEventEntity($eventEntity);
         $message->setPayload($payload);
-        $this->assertSame($this->expectedResult(), MessageHelper::serializeMessage($message));
+        $this->assertSame($this->expectedResult(), $messageSerializer->serialize($message, Message::class));
+    }
+
+    public function testSeralizeThrowsExceptionIfWrongClassPassed()
+    {
+        $this->expectException(\Exception::class);
+        $messageSerializer = new MessageSerializer();
+        $messageSerializer->serialize(new Event(), Event::class);
     }
 
     public function expectedResult(): string
@@ -115,5 +132,44 @@ class MessageHelperTest extends \PHPUnit\Framework\TestCase
         return (new PayloadBase())->setPath('path')
             ->setData('data')
             ->setFormat('format');
+    }
+
+    public function testDenormalizeReturnsMessage()
+    {
+        $this->assertInstanceOf(Message::class, $this->message);
+    }
+
+    public function testDenormalizeSetsStreamCorrectly()
+    {
+        $this->assertInstanceOf(Stream::class, $this->message->getStream());
+    }
+
+    public function testDenormalizeSetsJobCorrectly()
+    {
+        $this->assertInstanceOf(Job::class, $this->message->getJob());
+    }
+
+    public function testDenormalizeSetsEventCorrectly()
+    {
+        $this->assertInstanceOf(Event::class, $this->message->getEvent());
+    }
+
+    public function testDenormalizeSetsEventEntityCorrectly()
+    {
+        $this->assertInstanceOf(EventEntity::class, $this->message->getEventEntity());
+    }
+
+    public function testDenormalizeSetsPayloadCorrectly()
+    {
+        $this->assertInstanceOf(Payload::class, $this->message->getPayload());
+    }
+
+    public function testAdditionalSettingsGetSetToNullWhenNoUserSettingsPassed()
+    {
+        $data = json_decode($this->expectedResult(), true);
+        $data['stream']['user']['additional_settings'] = null;
+        $messageNormalizer = new MessageSerializer();
+        $message = $messageNormalizer->deserialize($data, Message::class);
+        $this->assertNull($message->getStream()->getUser()->getAdditionalSettings());
     }
 }

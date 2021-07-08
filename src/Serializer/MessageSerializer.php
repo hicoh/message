@@ -13,11 +13,39 @@ use HiCo\Message\Status;
 use HiCo\Message\Stream;
 use HiCo\Message\SystemSetting;
 use HiCo\Message\User;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
-class MessageNormalizer implements DenormalizerInterface
+class MessageSerializer implements SerializerInterface
 {
-    public function denormalize($data, string $type, string $format = null, array $context = []): Message
+    /**
+     * @throws \Exception
+     */
+    public function serialize($data, string $format, array $context = []): string
+    {
+        if (!$data instanceof Message) {
+            throw new \Exception(sprintf('Class (%s) can not be serialized using MessageSerializer', get_class($data)));
+        }
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())];
+
+        return (new Serializer($normalizers, $encoders))->serialize(
+            $data,
+            'json',
+            [
+                'ignored_attributes' => ['scheduledEvents'],
+                'circular_reference_handler' => function ($object) {
+                    return $object->getId();
+                },
+            ]
+        );
+    }
+
+    public function deserialize($data, string $type, string $format = null, array $context = []): Message
     {
         $message = new Message();
         $stream = new Stream();
@@ -33,10 +61,8 @@ class MessageNormalizer implements DenormalizerInterface
             ->setTitle($data['stream']['spec']['title'])
             ->setTransformationId($data['stream']['spec']['transformation_id']));
 
-        if (
-            isset($data['stream']['user']['additional_settings']) &&
-            is_array($data['stream']['user']['additional_settings'])
-        ) {
+        if (isset($data['stream']['user']['additional_settings']) &&
+            is_array($data['stream']['user']['additional_settings'])) {
             $stream->setUser((new User())->setAdditionalSettings($data['stream']['user']['additional_settings']));
         } else {
             $stream->setUser((new User())->setAdditionalSettings(null));
@@ -145,10 +171,5 @@ class MessageNormalizer implements DenormalizerInterface
         $message->setPayload((new Payload())->setIn($in)->setOut($out)->setWebHookEvent($webHookEvent));
 
         return $message;
-    }
-
-    public function supportsDenormalization($data, string $type, string $format = null): bool
-    {
-        return Message::class == $type;
     }
 }

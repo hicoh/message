@@ -132,10 +132,8 @@ class SystemSetting
         if (isset($data['stream'][$systemDestination]['url'])) {
             $this->setUrl($data['stream'][$systemDestination]['url']);
         }
-        if (
-            isset($data['stream'][$systemDestination]['additional_settings']) &&
-            is_array($data['stream'][$systemDestination]['additional_settings'])
-        ) {
+        if (isset($data['stream'][$systemDestination]['additional_settings']) &&
+            is_array($data['stream'][$systemDestination]['additional_settings'])) {
             $this->setAdditionalSettings($data['stream'][$systemDestination]['additional_settings']);
         }
 
