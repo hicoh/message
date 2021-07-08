@@ -4,11 +4,11 @@ namespace HiCo\Message;
 
 class Status
 {
-    private ?string $status;
-    private ?string $message;
-    private ?string $dId;
-    private ?string $dPid;
-    private ?string $flag;
+    private ?string $status = null;
+    private ?string $message = null;
+    private ?string $dId = null;
+    private ?string $dPid = null;
+    private ?string $flag = null;
 
     public function getStatus(): ?string
     {

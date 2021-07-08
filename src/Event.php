@@ -4,10 +4,10 @@ namespace HiCo\Message;
 
 class Event
 {
-    private ?string $id;
-    private ?array $scheduledEvents;
-    private ?Status $status;
-    private ?bool $last;
+    private ?string $id = null;
+    private ?array $scheduledEvents = null;
+    private ?Status $status = null;
+    private ?bool $last = null;
 
     public const OK_STATUS = 'OK';
     public const FAILED_STATUS = 'FAILED';

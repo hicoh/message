@@ -6,8 +6,8 @@ class Message
 {
     private Stream $stream;
     private Job $job;
-    private ?Event $event;
-    private ?EventEntity $eventEntity;
+    private ?Event $event = null;
+    private ?EventEntity $eventEntity = null;
     private Payload $payload;
 
     public function setStream(Stream $stream): self

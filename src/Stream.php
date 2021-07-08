@@ -7,7 +7,7 @@ class Stream
     private SystemSetting $destination;
     private SystemSetting $source;
     private Spec $spec;
-    private ?User $user;
+    private ?User $user = null;
 
     public function setDestination(SystemSetting $destination): self
     {

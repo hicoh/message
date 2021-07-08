@@ -4,14 +4,14 @@ namespace HiCo\Message;
 
 class SystemSetting
 {
-    private ?string $function;
-    private ?string $keyId;
-    private ?string $options;
-    private ?string $queueUrl;
-    private ?string $system;
-    private ?string $trigger;
-    private ?string $url;
-    private ?array $additionalSettings;
+    private ?string $function = null;
+    private ?string $keyId = null;
+    private ?string $options = null;
+    private ?string $queueUrl = null;
+    private ?string $system = null;
+    private ?string $trigger = null;
+    private ?string $url = null;
+    private ?array $additionalSettings = null;
 
     public function getAdditionalSettings(): ?array
     {

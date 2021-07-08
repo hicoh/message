@@ -6,7 +6,7 @@ class PayloadBase
 {
     private string $path;
 
-    private ?string $data;
+    private ?string $data = null;
 
     private string $format;
 

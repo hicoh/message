@@ -4,7 +4,7 @@ namespace HiCo\Message;
 
 class User
 {
-    private ?array $additionalSettings;
+    private ?array $additionalSettings = null;
 
     public function getAdditionalSettings(): ?array
     {
