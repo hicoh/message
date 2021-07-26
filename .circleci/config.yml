@@ -1,0 +1,55 @@
+version: 2.1
+
+jobs:
+  lint:
+    docker:
+      - image: php:7.4.0-fpm
+    working_directory: ~/app
+    steps:
+      - checkout
+      - run:
+          name: Installing Libraries
+          command: |
+            apt-get update && apt-get install -y --no-install-recommends \
+              git
+      - run:
+          name: Install Composer
+          command: |
+            curl -sS https://getcomposer.org/installer | php -- \
+            --install-dir=/usr/bin --filename=composer
+      - run:
+          name: Update Composer
+          command: composer self-update
+      - run:
+          name: Generate Checksum file
+          command: md5sum composer.lock > checksum.txt
+      - restore_cache:
+          keys:
+            - composer-v1.0-{{ checksum "checksum.txt" }}
+            - composer-v1.0-
+      - run: composer install -n --prefer-dist
+      - save_cache:
+          key: composer-v1.0-{{ checksum "checksum.txt" }}
+          paths:
+            - ./vendor
+      - run:
+          name: Lint Check
+          command: vendor/bin/parallel-lint --no-progress --exclude vendor --blame src
+      - run:
+          name: CsFixer Check
+          command: vendor/bin/php-cs-fixer --config=./.php-cs-fixer.dist.php fix -v --dry-run --stop-on-violation src
+      - run:
+          name: PhpStan Check
+          command: vendor/bin/phpstan analyze --memory-limit=-1 --no-progress --level=5 src
+      - run:
+          name: Unit Tests
+          command: php vendor/bin/phpunit
+
+workflows:
+  build-containerise-deploy:
+    jobs:
+      - lint:
+          filters:
+            branches:
+              only:
+                - /release.*/
