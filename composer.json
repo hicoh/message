@@ -1,6 +1,6 @@
 {
     "name": "hicoh/message",
-    "version": "v1.0.3",
+    "version": "v1.0.4",
     "type": "library",
     "description": "Message class for interacting with the HighCohesion Platform",
     "keywords": [
@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.4.0",
+        "php": "^7.4.0 || ^8.0.0",
         "symfony/property-access": "^v5.1.7",
         "symfony/serializer": "^v5.1.7"
     },
