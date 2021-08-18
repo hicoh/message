@@ -65,4 +65,17 @@ class EventTest extends \PHPUnit\Framework\TestCase
         $event->setLast(true);
         $this->assertTrue($event->getLast());
     }
+
+    public function testSetAndGetAggregated()
+    {
+        $event = new Event();
+        $event->setAggregated(0);
+        $this->assertSame(0, $event->getAggregated());
+    }
+
+    public function testNoSetAndGetAggregated()
+    {
+        $event = new Event();
+        $this->assertSame(0, $event->getAggregated());
+    }
 }

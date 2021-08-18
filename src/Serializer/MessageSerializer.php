@@ -120,6 +120,9 @@ class MessageSerializer implements SerializerInterface
         if (isset($data['event']['last'])) {
             $message->getEvent()->setLast($data['event']['last']);
         }
+        if (isset($data['event']['aggregated'])) {
+            $message->getEvent()->setAggregated($data['event']['aggregated']);
+        }
 
         // Event Entity
         $eventEntity = new EventEntity();

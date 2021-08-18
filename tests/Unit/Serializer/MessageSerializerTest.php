@@ -4,7 +4,6 @@ namespace HiCo\Message\Unit\Serializer;
 
 use HiCo\Message\Event;
 use HiCo\Message\EventEntity;
-use HiCo\Message\Helper\MessageHelper;
 use HiCo\Message\Job;
 use HiCo\Message\Message;
 use HiCo\Message\Payload;
@@ -15,8 +14,9 @@ use HiCo\Message\Status;
 use HiCo\Message\Stream;
 use HiCo\Message\SystemSetting;
 use HiCo\Message\User;
+use PHPUnit\Framework\TestCase;
 
-class MessageSerializerTest extends \PHPUnit\Framework\TestCase
+class MessageSerializerTest extends TestCase
 {
     private Message $message;
 
@@ -52,7 +52,7 @@ class MessageSerializerTest extends \PHPUnit\Framework\TestCase
 
     public function expectedResult(): string
     {
-        return '{"stream":{"destination":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","url":"url","function":"function","key_id":"key-id"},"source":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","url":"url","function":"function","key_id":"key-id"},"spec":{"organisation_id":"organisation-id","data_type":"data-type","id":"id","title":"title","transformation_id":"transformation-id"},"user":{"additional_settings":{"settings":true}}},"job":{"id":"id","stage":"source","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"}},"event":{"id":"id","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"},"last":false},"event_entity":{"id":"id","destination_id":"destination-id","destination_parent_id":"destination-parent-id"},"payload":{"in":{"path":"path","data":"data","format":"format"},"out":{"path":"path","data":"data","format":"format"},"web_hook_event":{"path":"path","data":"data","format":"format"}},"stage_system_setting":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","url":"url","function":"function","key_id":"key-id"}}';
+        return '{"stream":{"destination":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","url":"url","function":"function","key_id":"key-id"},"source":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","url":"url","function":"function","key_id":"key-id"},"spec":{"organisation_id":"organisation-id","data_type":"data-type","id":"id","title":"title","transformation_id":"transformation-id"},"user":{"additional_settings":{"settings":true}}},"job":{"id":"id","stage":"source","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"}},"event":{"id":"id","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"},"last":false,"aggregated":0},"event_entity":{"id":"id","destination_id":"destination-id","destination_parent_id":"destination-parent-id"},"payload":{"in":{"path":"path","data":"data","format":"format"},"out":{"path":"path","data":"data","format":"format"},"web_hook_event":{"path":"path","data":"data","format":"format"}},"stage_system_setting":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","url":"url","function":"function","key_id":"key-id"}}';
     }
 
     public function createSystemSetting(): SystemSetting
@@ -110,7 +110,8 @@ class MessageSerializerTest extends \PHPUnit\Framework\TestCase
         return (new Event())->setId('id')
             ->setScheduleEvents([])
             ->setStatus($this->createStatus())
-            ->setLast(false);
+            ->setLast(false)
+            ->setAggregated(0);
     }
 
     public function createEventEntity(): EventEntity
@@ -171,5 +172,14 @@ class MessageSerializerTest extends \PHPUnit\Framework\TestCase
         $messageNormalizer = new MessageSerializer();
         $message = $messageNormalizer->deserialize($data, Message::class);
         $this->assertNull($message->getStream()->getUser()->getAdditionalSettings());
+    }
+
+    public function testAggregatedWhenNoValueIsPassed()
+    {
+        $data = json_decode($this->expectedResult(), true);
+        unset($data['event']['aggregated']);
+        $messageNormalizer = new MessageSerializer();
+        $message = $messageNormalizer->deserialize($data, Message::class);
+        $this->assertSame($message->getEvent()->getAggregated(), 0);
     }
 }
