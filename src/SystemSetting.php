@@ -10,6 +10,8 @@ class SystemSetting
     private ?string $queueUrl = null;
     private ?string $system = null;
     private ?string $trigger = null;
+    private ?bool $aggregate_events = null;
+    private ?int $pagination = null;
     private ?string $url = null;
     private ?array $additionalSettings = null;
 
@@ -73,6 +75,30 @@ class SystemSetting
         return $this;
     }
 
+    public function getAggregateEvents(): ?bool
+    {
+        return $this->aggregate_events;
+    }
+
+    public function setAggregateEvents(?bool $aggregate_events): self
+    {
+        $this->aggregate_events = $aggregate_events;
+
+        return $this;
+    }
+
+    public function getPagination(): ?int
+    {
+        return $this->pagination;
+    }
+
+    public function setPagination(?int $pagination): self
+    {
+        $this->pagination = $pagination;
+
+        return $this;
+    }
+
     public function getUrl(): ?string
     {
         return $this->url;
@@ -128,6 +154,12 @@ class SystemSetting
         }
         if (isset($data['stream'][$systemDestination]['trigger'])) {
             $this->setTrigger($data['stream'][$systemDestination]['trigger']);
+        }
+        if (isset($data['stream'][$systemDestination]['aggregate_events'])) {
+            $this->setAggregateEvents($data['stream'][$systemDestination]['aggregate_events']);
+        }
+        if (isset($data['stream'][$systemDestination]['pagination'])) {
+            $this->setPagination($data['stream'][$systemDestination]['pagination']);
         }
         if (isset($data['stream'][$systemDestination]['url'])) {
             $this->setUrl($data['stream'][$systemDestination]['url']);

@@ -38,6 +38,18 @@ class SystemSettingTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('trigger', $systemSetting->getTrigger());
     }
 
+    public function testSetAndGetAggregateEvents()
+    {
+        $systemSetting = (new SystemSetting())->setAggregateEvents(true);
+        $this->assertSame(true, $systemSetting->getAggregateEvents());
+    }
+
+    public function testSetAndGetPagination()
+    {
+        $systemSetting = (new SystemSetting())->setPagination(100);
+        $this->assertSame(100, $systemSetting->getPagination());
+    }
+
     public function testSetAndGetUrl()
     {
         $systemSetting = (new SystemSetting())->setUrl('url');
@@ -68,6 +80,8 @@ class SystemSettingTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('queue-url', $systemSetting->getQueueUrl());
         $this->assertSame('system', $systemSetting->getSystem());
         $this->assertSame('trigger', $systemSetting->getTrigger());
+        $this->assertSame(true, $systemSetting->getAggregateEvents());
+        $this->assertSame(100, $systemSetting->getPagination());
         $this->assertSame('url', $systemSetting->getUrl());
         $this->assertSame(['settings' => true], $systemSetting->getAdditionalSettings());
     }
@@ -83,6 +97,8 @@ class SystemSettingTest extends \PHPUnit\Framework\TestCase
                     'queue_url' => 'queue-url',
                     'system' => 'system',
                     'trigger' => 'trigger',
+                    'aggregate_events' => true,
+                    'pagination' => 100,
                     'url' => 'url',
                     'additional_settings' => ['settings' => true]
                 ]

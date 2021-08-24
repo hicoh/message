@@ -8,6 +8,9 @@ class Event
     private ?array $scheduledEvents = null;
     private ?Status $status = null;
     private ?bool $last = null;
+    private int $aggregated = 0;
+    private ?string $parent_event_id = null;
+    private ?bool $parent_event = null;
 
     public const OK_STATUS = 'OK';
     public const FAILED_STATUS = 'FAILED';
@@ -76,6 +79,42 @@ class Event
     public function setLast(?bool $last): self
     {
         $this->last = $last;
+
+        return $this;
+    }
+
+    public function getAggregated(): int
+    {
+        return $this->aggregated;
+    }
+
+    public function setAggregated(int $aggregated): self
+    {
+        $this->aggregated = $aggregated;
+
+        return $this;
+    }
+
+    public function getParentEventId(): ?string
+    {
+        return $this->parent_event_id;
+    }
+
+    public function setParentEventId(?string $parent_event_id): self
+    {
+        $this->parent_event_id = $parent_event_id;
+
+        return $this;
+    }
+
+    public function getParentEvent(): ?bool
+    {
+        return $this->parent_event;
+    }
+
+    public function setParentEvent(?bool $parent_event): self
+    {
+        $this->parent_event = $parent_event;
 
         return $this;
     }
