@@ -61,7 +61,7 @@ commit:
 	git add .
 	git commit -m "Release v$(PACKAGE_VERSION)"
 
-version: release tag commit	## Push new version to github
+version: release commit tag	## Push new version to github
 	@echo "============ Push version to origin ============"
 	git push origin "release-v$(PACKAGE_VERSION)" --tags
 	git checkout master
