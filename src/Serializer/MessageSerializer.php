@@ -129,6 +129,12 @@ class MessageSerializer implements SerializerInterface
         if (isset($data['event']['parent_event_id'])) {
             $message->getEvent()->setParentEventId($data['event']['parent_event_id']);
         }
+        if (isset($data['event']['original_event_id'])) {
+            $message->getEvent()->setOriginalEventId($data['event']['original_event_id']);
+        }
+        if (isset($data['event']['duplicated_event_id_list'][0])) {
+            $message->getEvent()->setDuplicatedEventIdList($data['event']['duplicated_event_id_list']);
+        }
 
         // Event Entity
         $eventEntity = new EventEntity();

@@ -104,4 +104,23 @@ class EventTest extends \PHPUnit\Framework\TestCase
         $event = new Event();
         $this->assertSame(null, $event->getParentEventId());
     }
+
+    public function testSetNullOriginalEventId()
+    {
+        $event = new Event();
+        $this->assertSame(null, $event->getOriginalEventId());
+    }
+
+    public function testSetNullDuplicatedEventIdList()
+    {
+        $event = new Event();
+        $this->assertSame(null, $event->getDuplicatedEventIdList());
+    }
+
+    public function testAddDuplicatedEventId()
+    {
+        $event = (new Event())->addDuplicatedEventIdList('123');
+        $this->assertSame('123', $event->getDuplicatedEventIdList()[0]);
+
+    }
 }
