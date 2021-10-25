@@ -11,6 +11,8 @@ class Event
     private int $aggregated = 0;
     private ?string $parent_event_id = null;
     private ?bool $parent_event = null;
+    private ?string $original_event_id = null;
+    private ?array $duplicated_event_id_list = null;
 
     public const OK_STATUS = 'OK';
     public const FAILED_STATUS = 'FAILED';
@@ -115,6 +117,40 @@ class Event
     public function setParentEvent(?bool $parent_event): self
     {
         $this->parent_event = $parent_event;
+
+        return $this;
+    }
+
+    public function getOriginalEventId(): ?string
+    {
+        return $this->original_event_id;
+    }
+
+    public function setOriginalEventId(?string $original_event_id): self
+    {
+        $this->original_event_id = $original_event_id;
+
+        return $this;
+    }
+
+    public function getDuplicatedEventIdList(): ?array
+    {
+        return $this->duplicated_event_id_list;
+    }
+
+    public function setDuplicatedEventIdList(?array $duplicated_event_id_list): self
+    {
+        $this->duplicated_event_id_list = $duplicated_event_id_list;
+
+        return $this;
+    }
+
+    public function addDuplicatedEventIdList(string $duplicated_event_id): self
+    {
+        if (null === $this->duplicated_event_id_list) {
+            $this->duplicated_event_id_list = [];
+        }
+        $this->duplicated_event_id_list[] = $duplicated_event_id;
 
         return $this;
     }
