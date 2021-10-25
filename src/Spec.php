@@ -9,7 +9,7 @@ class Spec
     private string $id;
     private string $title;
     private string $transformationId;
-    private ?string $dedicatedQueue;
+    private ?string $dedicatedQueue = null;
 
     public function getOrganisationId(): string
     {
