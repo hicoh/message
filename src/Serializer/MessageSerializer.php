@@ -54,12 +54,18 @@ class MessageSerializer implements SerializerInterface
         $stream->setDestination((new SystemSetting())->setSystemSettings($data, 'destination'));
         $stream->setSource((new SystemSetting())->setSystemSettings($data, 'source'));
 
-        $stream->setSpec((new Spec())
+        $spec = (new Spec())
             ->setOrganisationId($data['stream']['spec']['organisation_id'])
             ->setDataType($data['stream']['spec']['data_type'])
             ->setId($data['stream']['spec']['id'])
             ->setTitle($data['stream']['spec']['title'])
-            ->setTransformationId($data['stream']['spec']['transformation_id']));
+            ->setTransformationId($data['stream']['spec']['transformation_id']);
+
+        if (isset($data['stream']['spec']['dedicated_queue_id'])) {
+            $spec->setDedicatedQueue($data['stream']['spec']['dedicated_queue_id']);
+        }
+
+        $stream->setSpec($spec);
 
         if (isset($data['stream']['user']['additional_settings']) &&
             is_array($data['stream']['user']['additional_settings'])) {
