@@ -3,6 +3,7 @@
 namespace HiCo\Message\Unit;
 
 use HiCo\Message\Job;
+use HiCo\Message\Key;
 use HiCo\Message\SystemSetting;
 
 class SystemSettingTest extends \PHPUnit\Framework\TestCase
@@ -64,26 +65,8 @@ class SystemSettingTest extends \PHPUnit\Framework\TestCase
 
     public function testSetAndGetKeyId()
     {
-        $systemSetting = (new SystemSetting())->setKeyId('key-id');
-        $this->assertSame('key-id', $systemSetting->getKeyId());
-    }
-
-    public function testSetSystemSettingsCorrectlySetsAllSettings()
-    {
-        $systemSetting = (new SystemSetting())->setSystemSettings(
-            $this->getDataExample(),
-            Job::STAGE_JOB
-        );
-        $this->assertSame('function', $systemSetting->getFunction());
-        $this->assertSame('key-id', $systemSetting->getKeyId());
-        $this->assertSame('options', $systemSetting->getOptions());
-        $this->assertSame('queue-url', $systemSetting->getQueueUrl());
-        $this->assertSame('system', $systemSetting->getSystem());
-        $this->assertSame('trigger', $systemSetting->getTrigger());
-        $this->assertSame(true, $systemSetting->getAggregateEvents());
-        $this->assertSame(100, $systemSetting->getPagination());
-        $this->assertSame('url', $systemSetting->getUrl());
-        $this->assertSame(['settings' => true], $systemSetting->getAdditionalSettings());
+        $systemSetting = (new SystemSetting())->setKey((new Key())->setId('1234'));
+        $this->assertSame('1234', $systemSetting->getKey()->getId());
     }
 
     protected function getDataExample(): array

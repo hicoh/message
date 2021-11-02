@@ -5,6 +5,7 @@ namespace HiCo\Message\Serializer;
 use HiCo\Message\Event;
 use HiCo\Message\EventEntity;
 use HiCo\Message\Job;
+use HiCo\Message\Key;
 use HiCo\Message\Message;
 use HiCo\Message\Payload;
 use HiCo\Message\PayloadBase;
@@ -51,8 +52,8 @@ class MessageSerializer implements SerializerInterface
         $stream = new Stream();
 
         // Stream
-        $stream->setDestination((new SystemSetting())->setSystemSettings($data, 'destination'));
-        $stream->setSource((new SystemSetting())->setSystemSettings($data, 'source'));
+        $stream->setDestination($this->setSystemSettings($data, 'destination'));
+        $stream->setSource($this->setSystemSettings($data, 'source'));
 
         $spec = (new Spec())
             ->setOrganisationId($data['stream']['spec']['organisation_id'])
@@ -192,5 +193,51 @@ class MessageSerializer implements SerializerInterface
         $message->setPayload((new Payload())->setIn($in)->setOut($out)->setWebHookEvent($webHookEvent));
 
         return $message;
+    }
+
+    public function setSystemSettings(?array $data, string $systemDestination): SystemSetting
+    {
+        $systemSettings = new SystemSetting();
+        if (isset($data['stream'][$systemDestination]['function'])) {
+            $systemSettings->setFunction($data['stream'][$systemDestination]['function']);
+        }
+        $key = new Key();
+        if (isset($data['stream'][$systemDestination]['key']['id'])) {
+            $key->setId($data['stream'][$systemDestination]['key']['id']);
+        }
+        if (isset($data['stream'][$systemDestination]['key']['title'])) {
+            $key->setTitle($data['stream'][$systemDestination]['key']['title']);
+        }
+        if (isset($data['stream'][$systemDestination]['key']['credentials'])) {
+            $key->setCredentials($data['stream'][$systemDestination]['key']['credentials']);
+        }
+        $systemSettings->setKey($key);
+        if (isset($data['stream'][$systemDestination]['options'])) {
+            $systemSettings->setOptions($data['stream'][$systemDestination]['options']);
+        }
+        if (isset($data['stream'][$systemDestination]['queue_url'])) {
+            $systemSettings->setQueueUrl($data['stream'][$systemDestination]['queue_url']);
+        }
+        if (isset($data['stream'][$systemDestination]['system'])) {
+            $systemSettings->setSystem($data['stream'][$systemDestination]['system']);
+        }
+        if (isset($data['stream'][$systemDestination]['trigger'])) {
+            $systemSettings->setTrigger($data['stream'][$systemDestination]['trigger']);
+        }
+        if (isset($data['stream'][$systemDestination]['aggregate_events'])) {
+            $systemSettings->setAggregateEvents($data['stream'][$systemDestination]['aggregate_events']);
+        }
+        if (isset($data['stream'][$systemDestination]['pagination'])) {
+            $systemSettings->setPagination($data['stream'][$systemDestination]['pagination']);
+        }
+        if (isset($data['stream'][$systemDestination]['url'])) {
+            $systemSettings->setUrl($data['stream'][$systemDestination]['url']);
+        }
+        if (isset($data['stream'][$systemDestination]['additional_settings']) &&
+            is_array($data['stream'][$systemDestination]['additional_settings'])) {
+            $systemSettings->setAdditionalSettings($data['stream'][$systemDestination]['additional_settings']);
+        }
+
+        return $systemSettings;
     }
 }
