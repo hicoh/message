@@ -5,6 +5,7 @@ namespace HiCo\Message\Unit\Serializer;
 use HiCo\Message\Event;
 use HiCo\Message\EventEntity;
 use HiCo\Message\Job;
+use HiCo\Message\Key;
 use HiCo\Message\Message;
 use HiCo\Message\Payload;
 use HiCo\Message\PayloadBase;
@@ -52,13 +53,13 @@ class MessageSerializerTest extends TestCase
 
     public function expectedResult(): string
     {
-        return '{"stream":{"destination":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key_id":"key-id"},"source":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key_id":"key-id"},"spec":{"organisation_id":"organisation-id","data_type":"data-type","id":"id","title":"title","transformation_id":"transformation-id","dedicated_queue_id":"dedicated-queue-id"},"user":{"additional_settings":{"settings":true}}},"job":{"id":"id","stage":"source","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"}},"event":{"id":"id","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"},"last":false,"aggregated":0,"parent_event_id":"parent-event-id","parent_event":true,"original_event_id":null,"duplicated_event_id_list":null},"event_entity":{"id":"id","destination_id":"destination-id","destination_parent_id":"destination-parent-id"},"payload":{"in":{"path":"path","data":"data","format":"format"},"out":{"path":"path","data":"data","format":"format"},"web_hook_event":{"path":"path","data":"data","format":"format"}},"stage_system_setting":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key_id":"key-id"}}';
+        return '{"stream":{"destination":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"source":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"spec":{"organisation_id":"organisation-id","data_type":"data-type","id":"id","title":"title","transformation_id":"transformation-id","dedicated_queue_id":"dedicated-queue-id"},"user":{"additional_settings":{"settings":true}}},"job":{"id":"id","stage":"source","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"}},"event":{"id":"id","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"},"last":false,"aggregated":0,"parent_event_id":"parent-event-id","parent_event":true,"original_event_id":null,"duplicated_event_id_list":null},"event_entity":{"id":"id","destination_id":"destination-id","destination_parent_id":"destination-parent-id"},"payload":{"in":{"path":"path","data":"data","format":"format"},"out":{"path":"path","data":"data","format":"format"},"web_hook_event":{"path":"path","data":"data","format":"format"}},"stage_system_setting":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}}}';
     }
 
     public function createSystemSetting(): SystemSetting
     {
         return (new SystemSetting())->setFunction('function')
-            ->setKeyId('key-id')
+            ->setKey((new Key())->setId('123')->setTitle('test')->addCredentials('name', 'test'))
             ->setOptions('options')
             ->setQueueUrl('queue-url')
             ->setSystem('system')

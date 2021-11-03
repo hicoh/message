@@ -5,7 +5,7 @@ namespace HiCo\Message;
 class SystemSetting
 {
     private ?string $function = null;
-    private ?string $keyId = null;
+    private ?Key $key = null;
     private ?string $options = null;
     private ?string $queueUrl = null;
     private ?string $system = null;
@@ -123,51 +123,14 @@ class SystemSetting
         return $this;
     }
 
-    public function getKeyId(): ?string
+    public function getKey(): ?Key
     {
-        return $this->keyId;
+        return $this->key;
     }
 
-    public function setKeyId(?string $keyId): self
+    public function setKey(?Key $key): self
     {
-        $this->keyId = $keyId;
-
-        return $this;
-    }
-
-    public function setSystemSettings(?array $data, string $systemDestination): ?self
-    {
-        if (isset($data['stream'][$systemDestination]['function'])) {
-            $this->setFunction($data['stream'][$systemDestination]['function']);
-        }
-        if (isset($data['stream'][$systemDestination]['key_id'])) {
-            $this->setKeyId($data['stream'][$systemDestination]['key_id']);
-        }
-        if (isset($data['stream'][$systemDestination]['options'])) {
-            $this->setOptions($data['stream'][$systemDestination]['options']);
-        }
-        if (isset($data['stream'][$systemDestination]['queue_url'])) {
-            $this->setQueueUrl($data['stream'][$systemDestination]['queue_url']);
-        }
-        if (isset($data['stream'][$systemDestination]['system'])) {
-            $this->setSystem($data['stream'][$systemDestination]['system']);
-        }
-        if (isset($data['stream'][$systemDestination]['trigger'])) {
-            $this->setTrigger($data['stream'][$systemDestination]['trigger']);
-        }
-        if (isset($data['stream'][$systemDestination]['aggregate_events'])) {
-            $this->setAggregateEvents($data['stream'][$systemDestination]['aggregate_events']);
-        }
-        if (isset($data['stream'][$systemDestination]['pagination'])) {
-            $this->setPagination($data['stream'][$systemDestination]['pagination']);
-        }
-        if (isset($data['stream'][$systemDestination]['url'])) {
-            $this->setUrl($data['stream'][$systemDestination]['url']);
-        }
-        if (isset($data['stream'][$systemDestination]['additional_settings']) &&
-            is_array($data['stream'][$systemDestination]['additional_settings'])) {
-            $this->setAdditionalSettings($data['stream'][$systemDestination]['additional_settings']);
-        }
+        $this->key = $key;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 {
     "name": "hicoh/message",
-    "version": "v1.0.14",
+    "version": "v1.0.15",
     "type": "library",
     "description": "Message class for interacting with the HighCohesion Platform",
     "keywords": [
