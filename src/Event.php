@@ -15,6 +15,7 @@ class Event
     private ?array $duplicated_event_id_list = null;
 
     public const OK_STATUS = 'OK';
+    public const TRANSFORMED_STATUS = 'TRANSFORMED';
     public const FAILED_STATUS = 'FAILED';
     public const ERROR_STATUS = 'ERROR';
     public const ABORT_STATUS = 'ABORTED';
