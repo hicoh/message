@@ -18,6 +18,11 @@ class Files
         return self::getJobFolder($message) . '/job.json';
     }
 
+    public static function getEventPayloadFilePath(Message $message): string
+    {
+        return self::getJobFolder($message) . '/event_payload.json';
+    }
+
     public static function getEventFolder(Message $message): string
     {
         return self::getJobFolder($message) . '/' . $message->getEvent()->getId();
