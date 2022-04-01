@@ -36,6 +36,12 @@ class SpecTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('transformation-id', $spec->getTransformationId());
     }
 
+    public function testSetAndGetTransformationVersion()
+    {
+        $spec = (new Spec())->setTransformationVersion('transformation-version');
+        $this->assertSame('transformation-version', $spec->getTransformationVersion());
+    }
+
     public function testSetAndGetDedicatedQueueId()
     {
         $spec = (new Spec())->setDedicatedQueueId('dedicated-queue-id');
