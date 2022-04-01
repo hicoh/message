@@ -60,7 +60,8 @@ class MessageSerializer implements SerializerInterface
             ->setDataType($data['stream']['spec']['data_type'])
             ->setId($data['stream']['spec']['id'])
             ->setTitle($data['stream']['spec']['title'])
-            ->setTransformationId($data['stream']['spec']['transformation_id']);
+            ->setTransformationId($data['stream']['spec']['transformation_id'])
+            ->setTransformationVersion($data['stream']['spec']['transformation_version']);
 
         if (isset($data['stream']['spec']['dedicated_queue_id'])) {
             $spec->setDedicatedQueueId($data['stream']['spec']['dedicated_queue_id']);
