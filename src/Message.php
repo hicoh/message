@@ -43,4 +43,9 @@ class Message
     {
         return $this->event;
     }
+
+    public function getStageSystemSetting(): SystemSetting
+    {
+        return (self::getStream())->{'get' . ucfirst($this->getJob()->getStage())}();
+    }
 }
