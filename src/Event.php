@@ -12,7 +12,7 @@ class Event
     public const ERROR_STATUS = 'ERROR';
     public const ABORT_STATUS = 'ABORTED';
 
-    public function __construct($id = null, $scheduledEvents = null, $status = null)
+    public function __construct($id = null)
     {
         $this->setId($id);
     }
