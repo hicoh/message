@@ -32,27 +32,4 @@ class MessageTest extends \PHPUnit\Framework\TestCase
         $message = (new Message())->setEvent($event);
         $this->assertSame($event, $message->getEvent());
     }
-
-    public function testSetAndGetEventEntity()
-    {
-        $eventEntity = new EventEntity();
-        $message = (new Message())->setEventEntity($eventEntity);
-        $this->assertSame($eventEntity, $message->getEventEntity());
-    }
-
-    public function testSetAndGetPayload()
-    {
-        $payload = new Payload();
-        $message = (new Message())->setPayload($payload);
-        $this->assertSame($payload, $message->getPayload());
-    }
-
-    public function testGetStageSystemSetting()
-    {
-        $systemSetting = new SystemSetting();
-        $stream = (new Stream())->setSource($systemSetting);
-        $job = (new Job())->setStage(Job::STAGE_JOB);
-        $message = (new Message())->setJob($job)->setStream($stream);
-        $this->assertSame($systemSetting, $message->getStageSystemSetting());
-    }
 }

@@ -3,15 +3,11 @@
 namespace HiCo\Message\Unit\Serializer;
 
 use HiCo\Message\Event;
-use HiCo\Message\EventEntity;
 use HiCo\Message\Job;
 use HiCo\Message\Key;
 use HiCo\Message\Message;
-use HiCo\Message\Payload;
-use HiCo\Message\PayloadBase;
 use HiCo\Message\Serializer\MessageSerializer;
 use HiCo\Message\Spec;
-use HiCo\Message\Status;
 use HiCo\Message\Stream;
 use HiCo\Message\SystemSetting;
 use HiCo\Message\User;
@@ -33,18 +29,14 @@ class MessageSerializerTest extends TestCase
         $stream = $this->createStream();
         $job = $this->createJob();
         $event = $this->createEvent();
-        $eventEntity = $this->createEventEntity();
-        $payload = $this->createPayload();
         $message = new Message();
         $message->setStream($stream);
         $message->setJob($job);
         $message->setEvent($event);
-        $message->setEventEntity($eventEntity);
-        $message->setPayload($payload);
         $this->assertSame($this->expectedResult(), $messageSerializer->serialize($message, Message::class));
     }
 
-    public function testSeralizeThrowsExceptionIfWrongClassPassed()
+    public function testSerializeThrowsExceptionIfWrongClassPassed()
     {
         $this->expectException(\Exception::class);
         $messageSerializer = new MessageSerializer();
@@ -53,20 +45,17 @@ class MessageSerializerTest extends TestCase
 
     public function expectedResult(): string
     {
-        return '{"stream":{"destination":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"source":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"spec":{"organisation_id":"organisation-id","data_type":"data-type","id":"id","title":"title","transformation_id":"transformation-id","transformation_version":"transformation-version","dedicated_queue_id":"dedicated-queue-id"},"user":{"additional_settings":{"settings":true}}},"job":{"id":"id","stage":"source","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"}},"event":{"id":"id","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"},"last":false,"aggregated":0,"parent_event_id":"parent-event-id","parent_event":true,"original_event_id":null,"duplicated_event_id_list":null},"event_entity":{"id":"id","destination_id":"destination-id","destination_parent_id":"destination-parent-id"},"payload":{"in":{"path":"path","data":"data","format":"format"},"out":{"path":"path","data":"data","format":"format"},"web_hook_event":{"path":"path","data":"data","format":"format"}},"stage_system_setting":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}}}';
+        return '{"stream":{"destination":{"additional_settings":{"settings":true},"queue_url":"queue-url","system":"system","aggregate_events":true,"pagination":10,"function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"source":{"additional_settings":{"settings":true},"queue_url":"queue-url","system":"system","aggregate_events":true,"pagination":10,"function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"spec":{"organisation_id":"organisation-id","data_type":"data-type","id":"id","transformation_id":"transformation-id","transformation_version":"transformation-version","dedicated_queue_id":"dedicated-queue-id"},"user":{"additional_settings":{"settings":true}}},"job":{"id":"id","stage":"source"},"event":{"id":"id"}}';
     }
 
     public function createSystemSetting(): SystemSetting
     {
         return (new SystemSetting())->setFunction('function')
             ->setKey((new Key())->setId('123')->setTitle('test')->addCredentials('name', 'test'))
-            ->setOptions('options')
             ->setQueueUrl('queue-url')
             ->setSystem('system')
-            ->setTrigger('trigger')
             ->setAggregateEvents(true)
             ->setPagination(10)
-            ->setUrl('url')
             ->setAdditionalSettings(['settings' => true]);
     }
 
@@ -75,7 +64,6 @@ class MessageSerializerTest extends TestCase
         return (new Spec())->setOrganisationId('organisation-id')
             ->setDataType('data-type')
             ->setId('id')
-            ->setTitle('title')
             ->setTransformationId('transformation-id')
             ->setTransformationVersion('transformation-version')
             ->setDedicatedQueueId('dedicated-queue-id');
@@ -97,51 +85,12 @@ class MessageSerializerTest extends TestCase
     public function createJob(): Job
     {
         return (new Job())->setId('id')
-            ->setStage(Job::STAGE_JOB)
-            ->setStatus($this->createStatus());
-    }
-
-    public function createStatus(): Status
-    {
-        return (new Status())->setStatus('status')
-            ->setMessage('message')
-            ->setDId('did')
-            ->setDPid('dpid')
-            ->setFlag('flag');
+            ->setStage(Job::STAGE_JOB);
     }
 
     public function createEvent(): Event
     {
-        return (new Event())->setId('id')
-            ->setScheduleEvents([])
-            ->setStatus($this->createStatus())
-            ->setLast(false)
-            ->setAggregated(0)
-            ->setParentEvent(true)
-            ->setParentEventId('parent-event-id')
-            ->setOriginalEventId(null)
-            ->setDuplicatedEventIdList(null);
-    }
-
-    public function createEventEntity(): EventEntity
-    {
-        return (new EventEntity())->setId('id')
-            ->setDestinationId('destination-id')
-            ->setDestinationParentId('destination-parent-id');
-    }
-
-    public function createPayload(): Payload
-    {
-        return (new Payload())->setIn($this->createPayloadBase())
-            ->setOut($this->createPayloadBase())
-            ->setWebHookEvent($this->createPayloadBase());
-    }
-
-    public function createPayloadBase(): PayloadBase
-    {
-        return (new PayloadBase())->setPath('path')
-            ->setData('data')
-            ->setFormat('format');
+        return (new Event())->setId('id');
     }
 
     public function testDenormalizeReturnsMessage()
@@ -164,16 +113,6 @@ class MessageSerializerTest extends TestCase
         $this->assertInstanceOf(Event::class, $this->message->getEvent());
     }
 
-    public function testDenormalizeSetsEventEntityCorrectly()
-    {
-        $this->assertInstanceOf(EventEntity::class, $this->message->getEventEntity());
-    }
-
-    public function testDenormalizeSetsPayloadCorrectly()
-    {
-        $this->assertInstanceOf(Payload::class, $this->message->getPayload());
-    }
-
     public function testAdditionalSettingsGetSetToNullWhenNoUserSettingsPassed()
     {
         $data = json_decode($this->expectedResult(), true);
@@ -181,14 +120,5 @@ class MessageSerializerTest extends TestCase
         $messageNormalizer = new MessageSerializer();
         $message = $messageNormalizer->deserialize($data, Message::class);
         $this->assertNull($message->getStream()->getUser()->getAdditionalSettings());
-    }
-
-    public function testAggregatedWhenNoValueIsPassed()
-    {
-        $data = json_decode($this->expectedResult(), true);
-        unset($data['event']['aggregated']);
-        $messageNormalizer = new MessageSerializer();
-        $message = $messageNormalizer->deserialize($data, Message::class);
-        $this->assertSame($message->getEvent()->getAggregated(), 0);
     }
 }
