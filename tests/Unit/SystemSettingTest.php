@@ -15,12 +15,6 @@ class SystemSettingTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($setting, $systemSetting->getAdditionalSettings());
     }
 
-    public function testSetAndGetOptions()
-    {
-        $systemSetting = (new SystemSetting())->setOptions('options');
-        $this->assertSame('options', $systemSetting->getOptions());
-    }
-
     public function testSetAndGetQueueUrl()
     {
         $systemSetting = (new SystemSetting())->setQueueUrl('queue-url');
@@ -33,12 +27,6 @@ class SystemSettingTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('system', $systemSetting->getSystem());
     }
 
-    public function testSetAndGetTrigger()
-    {
-        $systemSetting = (new SystemSetting())->setTrigger('trigger');
-        $this->assertSame('trigger', $systemSetting->getTrigger());
-    }
-
     public function testSetAndGetAggregateEvents()
     {
         $systemSetting = (new SystemSetting())->setAggregateEvents(true);
@@ -49,12 +37,6 @@ class SystemSettingTest extends \PHPUnit\Framework\TestCase
     {
         $systemSetting = (new SystemSetting())->setPagination(100);
         $this->assertSame(100, $systemSetting->getPagination());
-    }
-
-    public function testSetAndGetUrl()
-    {
-        $systemSetting = (new SystemSetting())->setUrl('url');
-        $this->assertSame('url', $systemSetting->getUrl());
     }
 
     public function testSetAndGetFunction()
@@ -76,16 +58,13 @@ class SystemSettingTest extends \PHPUnit\Framework\TestCase
                 Job::STAGE_JOB => [
                     'function' => 'function',
                     'key_id' => 'key-id',
-                    'options' => 'options',
                     'queue_url' => 'queue-url',
                     'system' => 'system',
-                    'trigger' => 'trigger',
                     'aggregate_events' => true,
                     'pagination' => 100,
-                    'url' => 'url',
-                    'additional_settings' => ['settings' => true]
-                ]
-            ]
+                    'additional_settings' => ['settings' => true],
+                ],
+            ],
         ];
     }
 }

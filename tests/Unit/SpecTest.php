@@ -24,12 +24,6 @@ class SpecTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('data_type', $spec->getDataType());
     }
 
-    public function testSetAndGetTitle()
-    {
-        $spec = (new Spec())->setTitle('title');
-        $this->assertSame('title', $spec->getTitle());
-    }
-
     public function testSetAndGetTransformationId()
     {
         $spec = (new Spec())->setTransformationId('transformation-id');

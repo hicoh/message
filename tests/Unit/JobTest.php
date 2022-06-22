@@ -25,11 +25,4 @@ class JobTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
         (new Job())->setStage('invalid_stage');
     }
-
-    public function testSetAndGetStatus()
-    {
-        $status = new Status();
-        $job = (new Job())->setStatus($status);
-        $this->assertSame($status, $job->getStatus());
-    }
 }

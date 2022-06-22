@@ -6,13 +6,10 @@ class SystemSetting
 {
     private ?string $function = null;
     private ?Key $key = null;
-    private ?string $options = null;
     private ?string $queueUrl = null;
     private ?string $system = null;
-    private ?string $trigger = null;
     private ?bool $aggregate_events = null;
     private ?int $pagination = null;
-    private ?string $url = null;
     private ?array $additionalSettings = null;
 
     public function getAdditionalSettings(): ?array
@@ -23,18 +20,6 @@ class SystemSetting
     public function setAdditionalSettings(?array $additionalSettings): self
     {
         $this->additionalSettings = $additionalSettings;
-
-        return $this;
-    }
-
-    public function getOptions(): ?string
-    {
-        return $this->options;
-    }
-
-    public function setOptions(?string $options): self
-    {
-        $this->options = $options;
 
         return $this;
     }
@@ -63,18 +48,6 @@ class SystemSetting
         return $this;
     }
 
-    public function getTrigger(): ?string
-    {
-        return $this->trigger;
-    }
-
-    public function setTrigger(?string $trigger): self
-    {
-        $this->trigger = $trigger;
-
-        return $this;
-    }
-
     public function getAggregateEvents(): ?bool
     {
         return $this->aggregate_events;
@@ -95,18 +68,6 @@ class SystemSetting
     public function setPagination(?int $pagination): self
     {
         $this->pagination = $pagination;
-
-        return $this;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(?string $url): self
-    {
-        $this->url = $url;
 
         return $this;
     }

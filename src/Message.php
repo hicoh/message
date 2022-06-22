@@ -7,8 +7,6 @@ class Message
     private Stream $stream;
     private Job $job;
     private ?Event $event = null;
-    private ?EventEntity $eventEntity = null;
-    private Payload $payload;
 
     public function setStream(Stream $stream): self
     {
@@ -44,30 +42,6 @@ class Message
     public function getEvent(): Event
     {
         return $this->event;
-    }
-
-    public function setEventEntity(?EventEntity $eventEntity): self
-    {
-        $this->eventEntity = $eventEntity;
-
-        return $this;
-    }
-
-    public function getEventEntity(): ?EventEntity
-    {
-        return $this->eventEntity;
-    }
-
-    public function setPayload(Payload $payload): self
-    {
-        $this->payload = $payload;
-
-        return $this;
-    }
-
-    public function getPayload(): Payload
-    {
-        return $this->payload;
     }
 
     public function getStageSystemSetting(): SystemSetting
