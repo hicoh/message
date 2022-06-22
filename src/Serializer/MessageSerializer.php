@@ -106,42 +106,8 @@ class MessageSerializer implements SerializerInterface
         if (isset($data['event']['id'])) {
             $message->setEvent((new Event())->setId($data['event']['id']));
         }
-        if (isset($data['event']['status']) && is_array($data['event']['status'])) {
-            $status = new Status();
-            if (isset($data['event']['status']['status'])) {
-                $status->setStatus($data['event']['status']['status']);
-            }
-            if (isset($data['event']['status']['message'])) {
-                $status->setMessage($data['event']['status']['message']);
-            }
-            if (isset($data['event']['status']['d_id'])) {
-                $status->setDId($data['event']['status']['d_id']);
-            }
-            if (isset($data['event']['status']['d_pid'])) {
-                $status->setDPid($data['event']['status']['d_pid']);
-            }
-            if (isset($data['event']['status']['flag'])) {
-                $status->setFlag($data['event']['status']['flag']);
-            }
-            $message->getEvent()->setStatus($status);
-        }
-        if (isset($data['event']['last'])) {
-            $message->getEvent()->setLast($data['event']['last']);
-        }
-        if (isset($data['event']['aggregated'])) {
-            $message->getEvent()->setAggregated($data['event']['aggregated']);
-        }
-        if (isset($data['event']['parent_event'])) {
-            $message->getEvent()->setParentEvent($data['event']['parent_event']);
-        }
-        if (isset($data['event']['parent_event_id'])) {
-            $message->getEvent()->setParentEventId($data['event']['parent_event_id']);
-        }
         if (isset($data['event']['original_event_id'])) {
             $message->getEvent()->setOriginalEventId($data['event']['original_event_id']);
-        }
-        if (isset($data['event']['duplicated_event_id_list'][0])) {
-            $message->getEvent()->setDuplicatedEventIdList($data['event']['duplicated_event_id_list']);
         }
 
         // Event Entity
