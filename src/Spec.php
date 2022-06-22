@@ -9,7 +9,6 @@ class Spec
     private string $id;
     private string $title;
     private string $transformationId;
-    private string $transformationVersion;
     private ?string $dedicatedQueueId = null;
 
     public function getOrganisationId(): string
@@ -68,18 +67,6 @@ class Spec
     public function setTransformationId(string $transformationId): self
     {
         $this->transformationId = $transformationId;
-
-        return $this;
-    }
-
-    public function getTransformationVersion(): string
-    {
-        return $this->transformationVersion;
-    }
-
-    public function setTransformationVersion(string $transformationVersion): self
-    {
-        $this->transformationVersion = $transformationVersion;
 
         return $this;
     }
