@@ -3,7 +3,6 @@
 namespace HiCo\Message\Serializer;
 
 use HiCo\Message\Event;
-use HiCo\Message\EventEntity;
 use HiCo\Message\Job;
 use HiCo\Message\Key;
 use HiCo\Message\Message;
@@ -108,19 +107,6 @@ class MessageSerializer implements SerializerInterface
         if (isset($data['event']['original_event_id'])) {
             $message->getEvent()->setOriginalEventId($data['event']['original_event_id']);
         }
-
-        // Event Entity
-        $eventEntity = new EventEntity();
-        if (isset($data['event_entity']['id'])) {
-            $eventEntity->setId($data['event_entity']['id']);
-        }
-        if (isset($data['event_entity']['destination_id'])) {
-            $eventEntity->setDestinationId($data['event_entity']['destination_id']);
-        }
-        if (isset($data['event_entity']['destination_parent_id'])) {
-            $eventEntity->setDestinationParentId($data['event_entity']['destination_parent_id']);
-        }
-        $message->setEventEntity($eventEntity);
 
         // Payload
         $in = new PayloadBase();

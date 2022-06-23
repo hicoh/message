@@ -17,6 +17,7 @@ build:	## Build the app docker container.
 deps:
 	make start
 	$(PHPEXEC) composer install -n --prefer-dist
+	$(PHPEXEC) php ./vendor/bin/phpunit
 	make stop
 
 rebuild:	## Force a rebuild of the app docker image.
@@ -53,13 +54,13 @@ checkout:	## Checkout master branch
 release:
 	@echo "============ Create release branch ============"
 	git branch -m "release-v$(PACKAGE_VERSION)"
-tag:
-	@echo "============ Tag creation ============"
-	git tag -a "v$(PACKAGE_VERSION)" -m "Release v$(PACKAGE_VERSION)"
 commit:
 	@echo "============ Release building  ============"
 	git add .
 	git commit -m "Release v$(PACKAGE_VERSION)"
+tag:
+	@echo "============ Tag creation ============"
+	git tag -a "v$(PACKAGE_VERSION)" -m "Release v$(PACKAGE_VERSION)"
 
 version: release commit tag	## Push new version to github
 	@echo "============ Push version to origin ============"

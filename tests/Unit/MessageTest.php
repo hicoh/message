@@ -3,7 +3,6 @@
 namespace HiCo\Message\Unit;
 
 use HiCo\Message\Event;
-use HiCo\Message\EventEntity;
 use HiCo\Message\Job;
 use HiCo\Message\Message;
 use HiCo\Message\Payload;
@@ -31,13 +30,6 @@ class MessageTest extends \PHPUnit\Framework\TestCase
         $event = new Event();
         $message = (new Message())->setEvent($event);
         $this->assertSame($event, $message->getEvent());
-    }
-
-    public function testSetAndGetEventEntity()
-    {
-        $eventEntity = new EventEntity();
-        $message = (new Message())->setEventEntity($eventEntity);
-        $this->assertSame($eventEntity, $message->getEventEntity());
     }
 
     public function testSetAndGetPayload()
