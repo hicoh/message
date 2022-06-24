@@ -3,7 +3,6 @@
 namespace HiCo\Message\Unit;
 
 use HiCo\Message\Job;
-use HiCo\Message\Status;
 
 class JobTest extends \PHPUnit\Framework\TestCase
 {
@@ -24,12 +23,5 @@ class JobTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
         (new Job())->setStage('invalid_stage');
-    }
-
-    public function testSetAndGetStatus()
-    {
-        $status = new Status();
-        $job = (new Job())->setStatus($status);
-        $this->assertSame($status, $job->getStatus());
     }
 }

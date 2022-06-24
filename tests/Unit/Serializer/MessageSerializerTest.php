@@ -10,7 +10,6 @@ use HiCo\Message\Payload;
 use HiCo\Message\PayloadBase;
 use HiCo\Message\Serializer\MessageSerializer;
 use HiCo\Message\Spec;
-use HiCo\Message\Status;
 use HiCo\Message\Stream;
 use HiCo\Message\SystemSetting;
 use HiCo\Message\User;
@@ -50,7 +49,7 @@ class MessageSerializerTest extends TestCase
 
     public function expectedResult(): string
     {
-        return '{"stream":{"destination":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"source":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"spec":{"organisation_id":"organisation-id","data_type":"data-type","id":"id","title":"title","transformation_id":"transformation-id","dedicated_queue_id":"dedicated-queue-id"},"user":{"additional_settings":{"settings":true}}},"job":{"id":"id","stage":"source","status":{"status":"status","message":"message","d_id":"did","d_pid":"dpid","flag":"flag"}},"event":{"id":"id","original_event_id":null},"payload":{"in":{"path":"path","data":"data","format":"format"},"out":{"path":"path","data":"data","format":"format"},"web_hook_event":{"path":"path","data":"data","format":"format"}},"stage_system_setting":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}}}';
+        return '{"stream":{"destination":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"source":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}},"spec":{"organisation_id":"organisation-id","data_type":"data-type","id":"id","title":"title","transformation_id":"transformation-id","dedicated_queue_id":"dedicated-queue-id"},"user":{"additional_settings":{"settings":true}}},"job":{"id":"id","stage":"source"},"event":{"id":"id","original_event_id":null},"payload":{"in":{"path":"path","data":"data","format":"format"},"out":{"path":"path","data":"data","format":"format"},"web_hook_event":{"path":"path","data":"data","format":"format"}},"stage_system_setting":{"additional_settings":{"settings":true},"options":"options","queue_url":"queue-url","system":"system","trigger":"trigger","aggregate_events":true,"pagination":10,"url":"url","function":"function","key":{"id":"123","title":"test","credentials":{"name":"test"}}}}';
     }
 
     public function createSystemSetting(): SystemSetting
@@ -93,17 +92,7 @@ class MessageSerializerTest extends TestCase
     public function createJob(): Job
     {
         return (new Job())->setId('id')
-            ->setStage(Job::STAGE_JOB)
-            ->setStatus($this->createStatus());
-    }
-
-    public function createStatus(): Status
-    {
-        return (new Status())->setStatus('status')
-            ->setMessage('message')
-            ->setDId('did')
-            ->setDPid('dpid')
-            ->setFlag('flag');
+            ->setStage(Job::STAGE_JOB);
     }
 
     public function createEvent(): Event
