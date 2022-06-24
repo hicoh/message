@@ -9,7 +9,6 @@ use HiCo\Message\Message;
 use HiCo\Message\Payload;
 use HiCo\Message\PayloadBase;
 use HiCo\Message\Spec;
-use HiCo\Message\Status;
 use HiCo\Message\Stream;
 use HiCo\Message\SystemSetting;
 use HiCo\Message\User;
@@ -79,25 +78,6 @@ class MessageSerializer implements SerializerInterface
         // Job
         if (isset($data['job']['id'])) {
             $message->setJob((new Job())->setId($data['job']['id'])->setStage($data['job']['stage']));
-        }
-        if (isset($data['job']['status']) && is_array($data['job']['status'])) {
-            $status = new Status();
-            if (isset($data['job']['status']['status'])) {
-                $status->setStatus($data['job']['status']['status']);
-            }
-            if (isset($data['job']['status']['message'])) {
-                $status->setMessage($data['job']['status']['message']);
-            }
-            if (isset($data['job']['status']['d_id'])) {
-                $status->setDId($data['job']['status']['d_id']);
-            }
-            if (isset($data['job']['status']['d_pid'])) {
-                $status->setDPid($data['job']['status']['d_pid']);
-            }
-            if (isset($data['job']['status']['flag'])) {
-                $status->setFlag($data['job']['status']['flag']);
-            }
-            $message->getJob()->setStatus($status);
         }
 
         // Event
